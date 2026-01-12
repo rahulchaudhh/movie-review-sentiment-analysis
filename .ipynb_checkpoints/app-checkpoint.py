@@ -3,11 +3,16 @@ import joblib
 import re
 
 # 1. Load the saved model and vectorizer
-# (Make sure these files are in the same folder)
-vectorizer = joblib.load('vectorizer.pkl')
-model = joblib.load('model.pkl')
+# (Make sure these files are in the same folder as this script)
+# We use a try-except block just in case files are missing locally
+try:
+    vectorizer = joblib.load('vectorizer.pkl')
+    model = joblib.load('model.pkl')
+except FileNotFoundError:
+    st.error("Error: Model files not found. Please ensure 'vectorizer.pkl' and 'model.pkl' are in the repository.")
+    st.stop()
 
-# 2. Define the cleaning function (same as in your notebook)
+# 2. Define the cleaning function
 def clean_text(text):
     text = text.lower()
     text = re.sub(r'<.*?>', '', text) # Remove HTML
